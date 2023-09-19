@@ -40,8 +40,7 @@ const agregarACarrito = (idProductoSeleccionado) =>{
         // obtengo la posición en la cual se encuentra el producto
         const indiceProductoCarrito = carrito.findIndex((producto) => producto.id === idProductoSeleccionado);
         // obtengo el producto del carrito y acutalizo la cantidad
-        carrito[indiceProductoCarrito].cantidad++;
-        
+        carrito[indiceProductoCarrito].cantidad++; 
     }
     // actualizo el Storage
     localStorage.setItem("carrito", JSON.stringify(carrito));
@@ -110,6 +109,7 @@ busquedaInput.addEventListener("keyup", (e) => {
 
 
 const app = () =>{
+    console.log("Dentro de APp");
     cargarStock();
     renderizarProductos(productosStock);
     
