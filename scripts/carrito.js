@@ -1,3 +1,5 @@
+//import { mostrarNegacion } from "./main.js";
+
 // función para obtener el total de productos y el total a pagar
 const obtenerTotales = (carrito) => {
     const totales = document.getElementById("totales");
@@ -14,23 +16,48 @@ const obtenerTotales = (carrito) => {
     totales.append(filaTotales);
 };
 
+// se ejecuta al finalizar la compra
 const limpiarCarrito = () =>{
     localStorage.setItem("carrito", JSON.stringify([]));
     renderizarCarrito();
 }
 
+// se ejecuta al haber presionado el btn de finalizar compra
 const finalizarCompra = () => {
     Swal.fire('Gracias por su compra');
     limpiarCarrito();
 };
 
+const mostrarNegacion = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Disculpe... producto sin stock',
+      });
+};
+
+// se ejecuta cuando se presiona el boton "+" para agregar productos al carrito
 const agregarACarrito = (id,carrito) => {
     const indiceProductoCarrito = carrito.findIndex(producto => producto.id === id);
-    carrito[indiceProductoCarrito].cantidad++;
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    renderizarCarrito();
+    const indiceProductosStock = productosStock.findIndex(producto => producto.id === id);
+    const hayStock = productosStock[indiceProductosStock].stock > 0 ? true : false;
+    // verifico que haya stock 
+    if (hayStock) {
+        // actualizo la cantidad del producto 
+        carrito[indiceProductoCarrito].cantidad++;
+        // actualizo el array carrito en el localStorage
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        //actualizo el stock del producto
+        productosStock[indiceProductosStock].stock--;
+        renderizarCarrito();
+    } else {
+        mostrarNegacion();
+    }
+    // actualizo el array productos en el localStorage
+    localStorage.setItem("productos", JSON.stringify(productosStock));
+    
 }
 
+// se ejecuta cuando se presiona el boton "-" para agregar eliminar productos del carrito
 const eliminarDeCarrito = (id, carrito) => {
     const indiceProductoCarrito = carrito.findIndex(producto => producto.id === id);
     carrito[indiceProductoCarrito].cantidad--;
@@ -41,6 +68,7 @@ const eliminarDeCarrito = (id, carrito) => {
     renderizarCarrito();
 }
 
+// renderiza los productos agregados al carrito
 const renderizarCarrito = () =>{
     // obtengo el carrito almacenado en el localStorage
     const carrito = JSON.parse(localStorage.getItem("carrito"));
@@ -78,6 +106,7 @@ const renderizarCarrito = () =>{
             btnAgregar.addEventListener("click", () => agregarACarrito(id, carrito));
             btnEliminar.addEventListener("click", () => eliminarDeCarrito(id, carrito));
         });
+        // obtengo los totales de productos y el total a pagar y lo agrego al footer de la tabla
         obtenerTotales(carrito);
         botonesDiv.innerHTML = `
             <button type="button" class="btn btn-primary" id="btn_finalizar">Finalizar compra</button>
@@ -88,5 +117,8 @@ const renderizarCarrito = () =>{
         btnFinalizarCompra.addEventListener("click", finalizarCompra);
     }
 };
+
+//obtengo el stock de productos del localStorage
+const productosStock = JSON.parse(localStorage.getItem("productos"));
 
 renderizarCarrito();
