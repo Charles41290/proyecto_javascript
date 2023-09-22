@@ -4,7 +4,10 @@
 }
 
 .card{
+    margin: 10px;
     padding: 5px;
+    height: 550px;
+    width: 250px;
 }
 
 #botones_div{
