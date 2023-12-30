@@ -4,7 +4,8 @@ import {obtenerProductos, cargarStock } from "./productos.js"
 JSON.parse(localStorage.getItem('carrito')) === null && localStorage.setItem('carrito', JSON.stringify([]));
 // traigo el carrito del localStorage
 let carrito = JSON.parse(localStorage.getItem('carrito'));
-const productosStock = JSON.parse(localStorage.getItem("productos"));
+//const productosStock = JSON.parse(localStorage.getItem("productos")) || [];
+const productosStock = await obtenerProductos();
 //obtengo el input para la busqueda
 const busquedaInput = document.getElementById("busqueda_entrada");
 
@@ -70,7 +71,6 @@ const agregarACarrito = (idProductoSeleccionado) =>{
 
 // renderiza los productos dentro de index.html
 const renderizarProductos = (productos) => {
-    //const productos = await obtenerProductos();
     const productosDiv = document.getElementById("productos_div");
     productosDiv.innerHTML = "";
     productos.forEach(producto => {

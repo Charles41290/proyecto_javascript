@@ -1,6 +1,6 @@
 // obtengo los productos almacenados en el archivo libros.json
 export const obtenerProductos = async () =>{
-    const urlProductos = "../data/libros.json"
+    const urlProductos = "data/libros.json"
     let productos;
     try {
         const response = await fetch(urlProductos);
@@ -9,6 +9,7 @@ export const obtenerProductos = async () =>{
         console.error(`Archivo ${urlProductos} no encontrado`);
         productos = [];
     }
+    console.log(typeof(productos));
     return productos;
 } 
 
