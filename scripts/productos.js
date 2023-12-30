@@ -9,7 +9,6 @@ export const obtenerProductos = async () =>{
         console.error(`Archivo ${urlProductos} no encontrado`);
         productos = [];
     }
-    console.log(typeof(productos));
     return productos;
 } 
 
