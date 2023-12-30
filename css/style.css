@@ -23,3 +23,8 @@
 #busqueda_label{
     margin: 10px;
 }
+
+.card-img-top {
+    padding: 5px;
+    height: 325px;
+}
